@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediksi Risiko Kesehatan</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+            min-height: 100vh;
+            color: #334155;
+        }
+
+        .health-app {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .app-container {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            min-height: 90vh;
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 30px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+
+        .header-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-icon {
+            position: absolute;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 3.5rem;
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        .app-body {
+            padding: 40px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-result-container {
+            display: flex;
+            gap: 40px;
+            flex: 1;
+        }
+
+        .form-section {
+            flex: 3;
+            min-width: 0;
+        }
+
+        .result-section {
+            flex: 2;
+            min-width: 0;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            font-size: 1rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #475569;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .input-label i {
+            color: #64748b;
+            font-size: 0.75rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+            background: #f8fafc;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .input-wrapper:hover {
+            border-color: #cbd5e1;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            background: white;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            background: transparent;
+            font-size: 0.95rem;
+            color: #334155;
+            outline: none;
+        }
+
+        .input-field::placeholder {
+            color: #94a3b8;
+        }
+
+        .input-unit {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .select-field {
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            background: transparent;
+            font-size: 0.95rem;
+            color: #334155;
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px 12px;
+            padding-right: 36px;
+        }
+
+        .form-note {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 4px;
+            padding-left: 5px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px 32px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Result Panel Styles */
+        .result-panel {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 30px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid #e2e8f0;
+        }
+
+        .result-placeholder {
+            text-align: center;
+            color: #64748b;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .result-placeholder i {
+            font-size: 3rem;
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
+
+        .result-placeholder h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #475569;
+        }
+
+        .result-placeholder p {
+            font-size: 0.9rem;
+            max-width: 300px;
+            line-height: 1.5;
+        }
+
+        .result-active {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .result-status {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .risk-high .result-status {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border: none;
+        }
+
+        .risk-low .result-status {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border: none;
+        }
+
+        .risk-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .risk-high .risk-icon {
+            color: #ef4444;
+        }
+
+        .risk-low .risk-icon {
+            color: #10b981;
+        }
+
+        .risk-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .risk-high .risk-title {
+            color: #ef4444;
+        }
+
+        .risk-low .risk-title {
+            color: #10b981;
+        }
+
+        .risk-percentage {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin: 5px 0;
+        }
+
+        .risk-high .risk-percentage {
+            color: #dc2626;
+        }
+
+        .risk-low .risk-percentage {
+            color: #059669;
+        }
+
+        .result-details {
+            flex: 1;
+        }
+
+        .detail-item {
+            margin-bottom: 15px;
+        }
+
+        .detail-label {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #334155;
+        }
+
+        /* REMOVED: Tombol aksi dihapus */
+        .result-actions {
+            display: none; /* Sembunyikan bagian tombol */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 992px) {
+            .form-result-container {
+                flex-direction: column;
+            }
+            
+            .app-header {
+                padding: 25px 30px;
+            }
+            
+            .app-body {
+                padding: 30px;
+            }
+            
+            .header-icon {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .app-header {
+                padding: 20px;
+                text-align: center;
+            }
+            
+            .header-title {
+                font-size: 1.8rem;
+            }
+            
+            .app-body {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="health-app">
+    <div class="app-container">
+        <!-- Header Terintegrasi -->
+        <div class="app-header">
+            <div class="header-title">Prediksi Risiko Kesehatan</div>
+            <div class="header-subtitle">Analisis kesehatan personal berdasarkan data Anda</div>
+            <div class="header-icon">
+                <i class="fas fa-heartbeat"></i>
+            </div>
+        </div>
+
+        <!-- Body Terpadu -->
+        <div class="app-body">
+            <div class="form-result-container">
+                <!-- Form Section -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-clipboard-list"></i> Data Kesehatan Anda
+                    </div>
+
+                    <form id="healthForm" method="POST" action="/predict">
+                        <!-- DATA PERSONAL -->
+                        <div class="section-title" style="font-size: 1rem; margin-top: 25px;">
+                            <i class="fas fa-user"></i> Data Personal
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="input-label"><i class="fas fa-birthday-cake"></i> Usia</label>
+                                <div class="input-wrapper">
+                                    <input type="number" name="age" class="input-field" 
+                                           placeholder="Masukkan usia" 
+                                           value="{{ old.age if old else '70.0' }}" 
+                                           step="0.1" min="0" max="120" required>
+                                    <span class="input-unit">Tahun</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="input-label"><i class="fas fa-venus-mars"></i> Jenis Kelamin</label>
+                                <div class="input-wrapper">
+                                    <select name="gender" class="select-field" required>
+                                        <option value="" disabled selected>Pilih jenis kelamin</option>
+                                        <option value="male" {% if old and old.gender==1 %}selected{% endif %}>Laki-laki</option>
+                                        <option value="female" {% if old and old.gender==0 %}selected{% endif %}>Perempuan</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="input-label"><i class="fas fa-weight-scale"></i> Indeks Massa Tubuh</label>
+                                <div class="input-wrapper">
+                                    <input type="number" name="bmi" class="input-field" 
+                                           placeholder="Masukkan BMI" 
+                                           value="{{ old.bmi if old else '25.8' }}" 
+                                           step="0.1" min="10" max="50" required>
+                                </div>
+                                <div class="form-note">Normal: 18.5 - 24.9</div>
+                            </div>
+                        </div>
+
+                        <!-- KEBIASAAN SEHAT -->
+                        <div class="section-title" style="font-size: 1rem; margin-top: 25px;">
+                            <i class="fas fa-heart"></i> Kebiasaan Sehat
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="input-label"><i class="fas fa-walking"></i> Langkah Harian</label>
+                                <div class="input-wrapper">
+                                    <input type="number" name="daily_steps" class="input-field" 
+                                           placeholder="Masukkan jumlah langkah" 
+                                           value="{{ old.daily_steps if old else '18000.0' }}" 
+                                           step="0.1" min="0" max="50000" required>
+                                    <span class="input-unit">steps</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="input-label"><i class="fas fa-bed"></i> Jam Tidur</label>
+                                <div class="input-wrapper">
+                                    <input type="number" name="sleep_hours" class="input-field" 
+                                           placeholder="Masukkan jam tidur" 
+                                           value="{{ old.sleep_hours if old else '5.0' }}" 
+                                           step="0.1" min="0" max="24" required>
+                                    <span class="input-unit">jam</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="input-label"><i class="fas fa-tint"></i> Asupan Air</label>
+                                <div class="input-wrapper">
+                                    <input type="number" name="water_intake_l" class="input-field" 
+                                           placeholder="Masukkan asupan air" 
+                                           value="{{ old.water_intake_l if old else '1.4' }}" 
+                                           step="0.1" min="0" max="10" required>
+                                    <span class="input-unit">liter</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="input-label"><i class="fas fa-fire"></i> Kalori Dikonsumsi</label>
+                                <div class="input-wrapper">
+                                    <input type="number" name="calories_consumed" class="input-field" 
+                                           placeholder="Masukkan kalori" 
+                                           value="{{ old.calories_consumed if old else '2700.0' }}" 
+                                           step="0.1" min="0" max="10000" required>
+                                    <span class="input-unit">kcal</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- DATA KESEHATAN -->
+                        <div class="section-title" style="font-size: 1rem; margin-top: 25px;">
+                            <i class="fas fa-stethoscope"></i> Data Kesehatan
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="input-label"><i class="fas fa-heartbeat"></i> Denyut Jantung</label>
+                                <div class="input-wrapper">
+                                    <input type="number" name="resting_hr" class="input-field" 
+                                           placeholder="Masukkan denyut jantung" 
+                                           value="{{ old.resting_hr if old else '86.0' }}" 
+                                           step="0.1" min="30" max="200" required>
+                                    <span class="input-unit">bpm</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="input-label"><i class="fas fa-tint"></i> Kolesterol</label>
+                                <div class="input-wrapper">
+                                    <input type="number" name="cholesterol" class="input-field" 
+                                           placeholder="Masukkan kadar kolesterol" 
+                                           value="{{ old.cholesterol if old else '165.0' }}" 
+                                           step="0.1" min="100" max="400" required>
+                                    <span class="input-unit">mg/dL</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="input-label"><i class="fas fa-stethoscope"></i> Tekanan Darah Sistolik</label>
+                                <div class="input-wrapper">
+                                    <input type="number" name="systolic_bp" class="input-field" 
+                                           placeholder="Masukkan tekanan sistolik" 
+                                           value="{{ old.systolic_bp if old else '150.0' }}" 
+                                           step="0.1" min="70" max="250" required>
+                                    <span class="input-unit">mmHg</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="input-label"><i class="fas fa-stethoscope"></i> Tekanan Darah Diastolik</label>
+                                <div class="input-wrapper">
+                                    <input type="number" name="diastolic_bp" class="input-field" 
+                                           placeholder="Masukkan tekanan diastolik" 
+                                           value="{{ old.diastolic_bp if old else '105.0' }}" 
+                                           step="0.1" min="40" max="150" required>
+                                    <span class="input-unit">mmHg</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAKTOR RISIKO -->
+                        <div class="section-title" style="font-size: 1rem; margin-top: 25px;">
+                            <i class="fas fa-exclamation-triangle"></i> Faktor Risiko
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="input-label"><i class="fas fa-smoking"></i> Merokok</label>
+                                <div class="input-wrapper">
+                                    <select name="smoker" class="select-field" required>
+                                        <option value="" disabled selected>Pilih status</option>
+                                        <option value="ya" {% if old and old.smoker==1 %}selected{% endif %}>Ya</option>
+                                        <option value="tidak" {% if old and old.smoker==0 %}selected{% endif %}>Tidak</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="input-label"><i class="fas fa-wine-glass-alt"></i> Konsumsi Alkohol</label>
+                                <div class="input-wrapper">
+                                    <select name="alcohol" class="select-field" required>
+                                        <option value="" disabled selected>Pilih status</option>
+                                        <option value="ya" {% if old and old.alcohol==1 %}selected{% endif %}>Ya</option>
+                                        <option value="tidak" {% if old and old.alcohol==0 %}selected{% endif %}>Tidak</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="input-label"><i class="fas fa-family"></i> Riwayat Keluarga</label>
+                                <div class="input-wrapper">
+                                    <select name="family_history" class="select-field" required>
+                                        <option value="" disabled selected>Pilih riwayat</option>
+                                        <option value="ya" {% if old and old.family_history==1 %}selected{% endif %}>Ya</option>
+                                        <option value="tidak" {% if old and old.family_history==0 %}selected{% endif %}>Tidak</option>
+                                    </select>
+                                </div>
+                                <div class="form-note">Penyakit jantung, diabetes, hipertensi</div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-chart-line"></i> Analisis Risiko Kesehatan
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Result Section -->
+                <div class="result-section">
+                    <div class="section-title">
+                        <i class="fas fa-chart-bar"></i> Hasil Analisis
+                    </div>
+                    
+                    <div class="result-panel">
+                        {% if prediction %}
+                            {% if prediction == 'Risiko Tinggi' %}
+                                <div class="result-active risk-high">
+                                    <div class="result-status">
+                                        <div class="risk-icon">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                        </div>
+                                        <div class="risk-title">RISIKO TINGGI</div>
+                                        <div class="risk-percentage">{{ (prob * 100) | round(1) }}%</div>
+                                        <div style="color: #ef4444; font-weight: 500; font-size: 0.9rem;">
+                                            Perhatian: Konsultasi medis diperlukan
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="result-details">
+                                        <div class="detail-item">
+                                            <div class="detail-label"><i class="fas fa-info-circle"></i> Status</div>
+                                            <div class="detail-value">Risiko kesehatan tinggi</div>
+                                        </div>
+                                        <div class="detail-item">
+                                            <div class="detail-label"><i class="fas fa-calendar-check"></i> Rekomendasi</div>
+                                            <div class="detail-value">Segera konsultasi dengan dokter</div>
+                                        </div>
+                                        <div class="detail-item">
+                                            <div class="detail-label"><i class="fas fa-clock"></i> Waktu Tindakan</div>
+                                            <div class="detail-value">Dalam 1-2 minggu ke depan</div>
+                                        </div>
+                                        <div class="detail-item">
+                                            <div class="detail-label"><i class="fas fa-user-md"></i> Spesialisasi</div>
+                                            <div class="detail-value">Dokter umum / spesialis jantung</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Tombol Buat Janji Konsultasi DIHAPUS -->
+                                </div>
+                            {% else %}
+                                <div class="result-active risk-low">
+                                    <div class="result-status">
+                                        <div class="risk-icon">
+                                            <i class="fas fa-check-circle"></i>
+                                        </div>
+                                        <div class="risk-title">RISIKO RENDAH</div>
+                                        <div class="risk-percentage">{{ (prob * 100) | round(1) }}%</div>
+                                        <div style="color: #10b981; font-weight: 500; font-size: 0.9rem;">
+                                            Kondisi kesehatan baik
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="result-details">
+                                        <div class="detail-item">
+                                            <div class="detail-label"><i class="fas fa-info-circle"></i> Status</div>
+                                            <div class="detail-value">Risiko kesehatan rendah</div>
+                                        </div>
+                                        <div class="detail-item">
+                                            <div class="detail-label"><i class="fas fa-calendar-check"></i> Rekomendasi</div>
+                                            <div class="detail-value">Pertahankan gaya hidup sehat</div>
+                                        </div>
+                                        <div class="detail-item">
+                                            <div class="detail-label"><i class="fas fa-clock"></i> Pemeriksaan Rutin</div>
+                                            <div class="detail-value">Setiap 6-12 bulan</div>
+                                        </div>
+                                        <div class="detail-item">
+                                            <div class="detail-label"><i class="fas fa-heart"></i> Tips Kesehatan</div>
+                                            <div class="detail-value">Teruskan pola hidup sehat saat ini</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Tombol Unduh Laporan DIHAPUS -->
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="result-placeholder">
+                                <i class="fas fa-chart-pie"></i>
+                                <h3>Belum Ada Analisis</h3>
+                                <p>Isi formulir data kesehatan di sebelah kiri dan klik "Analisis Risiko Kesehatan" untuk melihat hasil prediksi risiko Anda.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Real-time form validation
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('healthForm');
+        const inputs = form.querySelectorAll('input, select');
+        
+        // Highlight filled inputs
+        inputs.forEach(input => {
+            // Check if input has value on load
+            if (input.value.trim()) {
+                input.parentElement.style.borderColor = '#10b981';
+            }
+            
+            // Update on input change
+            input.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    this.parentElement.style.borderColor = '#10b981';
+                } else {
+                    this.parentElement.style.borderColor = '#e2e8f0';
+                }
+            });
+        });
+        
+        // Form submission with animation
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+            const requiredFields = form.querySelectorAll('[required]');
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.parentElement.style.borderColor = '#ef4444';
+                    isValid = false;
+                    
+                    // Shake animation for empty required fields
+                    field.parentElement.style.animation = 'shake 0.5s';
+                    setTimeout(() => {
+                        field.parentElement.style.animation = '';
+                    }, 500);
+                }
+            });
+            
+            if (!isValid) {
+                e.preventDefault();
+                
+                // Show notification
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: #ef4444;
+                    color: white;
+                    padding: 12px 20px;
+                    border-radius: 8px;
+                    z-index: 1000;
+                    font-weight: 500;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                    animation: slideIn 0.3s ease;
+                `;
+                notification.textContent = 'Harap lengkapi semua field yang diperlukan';
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.animation = 'slideOut 0.3s ease';
+                    setTimeout(() => notification.remove(), 300);
+                }, 3000);
+            }
+        });
+    });
+    
+    // Add CSS animations
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+
+</body>
+</html>

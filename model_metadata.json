@@ -1,0 +1,20 @@
+{
+    "features": [
+        "age",
+        "gender",
+        "bmi",
+        "daily_steps",
+        "sleep_hours",
+        "water_intake_l",
+        "calories_consumed",
+        "smoker",
+        "alcohol",
+        "resting_hr",
+        "systolic_bp",
+        "diastolic_bp",
+        "cholesterol",
+        "family_history"
+    ],
+    "threshold": 0.3,
+    "best_model_name": "RandomForest"
+}
